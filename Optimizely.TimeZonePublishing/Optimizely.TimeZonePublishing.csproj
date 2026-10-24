@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+
+        <PackageId>Mardy.Optimizely.TimeZonePublishing</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>mardy-awd</Authors>
+        <Description>Time-zone-aware scheduled publishing for Optimizely CMS 13.</Description>
+        <PackageTags>Optimizely;CMS13;Publishing;TimeZone;Scheduling</PackageTags>
+
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/mardy-awd/Optimizely.TimeZonePublishing</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/mardy-awd/Optimizely.TimeZonePublishing</PackageProjectUrl>
+
+
+        <IsPackable>true</IsPackable>
+
+        <!-- Module ZIP generated during packing -->
+        <TimeZoneModuleSource>$(MSBuildProjectDirectory)\Module</TimeZoneModuleSource>
+        <TimeZoneModuleZip>$(MSBuildProjectDirectory)\obj\TimeZonePublishing.zip</TimeZoneModuleZip>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="EPiServer.CMS" Version="13.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="buildTransitive\Optimizely.TimeZonePublishing.targets"
+              Pack="true"
+              PackagePath="buildTransitive\" />
+    </ItemGroup>
+
+    <!-- Include the generated ZIP in the NuGet package -->
+    <ItemGroup>
+        <None Include="$(TimeZoneModuleZip)"
+              Pack="true"
+              PackagePath="contentFiles\any\net10.0\modules\_protected\TimeZonePublishing\"
+              Visible="false" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\README.md"
+              Pack="true"
+              PackagePath="\" />
+    </ItemGroup>
+    <!-- Generate the protected-module ZIP before NuGet packing -->
+    <Target Name="GenerateTimeZonePublishingZip"
+            BeforeTargets="GenerateNuspec">
+
+        <Error
+            Condition="!Exists('$(TimeZoneModuleSource)\module.config')"
+            Text="Module\module.config was not found." />
+
+        <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
+
+        <ZipDirectory
+            SourceDirectory="$(TimeZoneModuleSource)"
+            DestinationFile="$(TimeZoneModuleZip)"
+            Overwrite="true" />
+
+    </Target>
+
+</Project>

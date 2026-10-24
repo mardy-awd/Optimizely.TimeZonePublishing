@@ -1,0 +1,28 @@
+
+# .NET build outputs
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Optimizely generated module files
+**/modules/_protected/
+
+# NuGet generated packages
+*.nupkg
+*.snupkg
+
+# Test and temporary output
+publish-test/
+TestResults/
+
+# Operating system
+.DS_Store
+Thumbs.db
