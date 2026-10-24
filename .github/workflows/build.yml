@@ -1,0 +1,72 @@
+
+name: Build and Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Pack NuGet
+        run: dotnet pack -c Release --no-build -o ./artifacts
+
+      - name: Validate NuGet package
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.IO.Compression
+
+          $package = Get-ChildItem ./artifacts/*.nupkg | Select-Object -First 1
+
+          if (-not $package) {
+            throw "NuGet package was not generated."
+          }
+
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($package.FullName)
+
+          try {
+            $entries = $archive.Entries.FullName
+
+            $required = @(
+              "README.md",
+              "buildTransitive/Optimizely.TimeZonePublishing.targets",
+              "contentFiles/any/net10.0/modules/_protected/TimeZonePublishing/TimeZonePublishing.zip",
+              "lib/net10.0/Optimizely.TimeZonePublishing.dll"
+            )
+
+            foreach ($path in $required) {
+              if ($path -notin $entries) {
+                throw "Missing NuGet package entry: $path"
+              }
+            }
+
+            Write-Host "NuGet package structure validated successfully."
+          }
+          finally {
+            $archive.Dispose()
+          }
+
+      - name: Upload NuGet artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: timezonepublishing-nuget
+          path: ./artifacts/*.nupkg
