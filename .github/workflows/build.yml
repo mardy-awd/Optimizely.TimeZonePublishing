@@ -48,7 +48,7 @@ jobs:
 
             $required = @(
               "README.md",
-              "buildTransitive/Optimizely.TimeZonePublishing.targets",
+              "buildTransitive/Mardy.Optimizely.TimeZonePublishing.targets",
               "contentFiles/any/net10.0/modules/_protected/TimeZonePublishing/TimeZonePublishing.zip",
               "lib/net10.0/Optimizely.TimeZonePublishing.dll"
             )
