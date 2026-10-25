@@ -30,10 +30,12 @@ Editors can select their target time zone and enter the desired local publishing
 
 ## Compatibility
 
-- **Tested:** Optimizely CMS 13.4.0 with .NET 10.
+- **Tested:** Optimizely CMS 13.0.0 with .NET 10.
 - **Potential compatibility:** Earlier CMS versions, including CMS 12, may be supported with appropriate framework and package adjustments, but have not been tested.
 
-The current NuGet package targets `net10.0` and depends on Optimizely CMS 13.4.0. It is not currently intended for direct installation into CMS 12 applications.
+The NuGet package targets **.NET 10 (`net10.0`)** and requires **Optimizely CMS 13.0.0 or later**. Compatibility has been verified with CMS **13.0.0** and **13.4.0**.
+
+The package is not intended for direct installation into Optimizely CMS 12 applications.
 
 ## Installation
 
