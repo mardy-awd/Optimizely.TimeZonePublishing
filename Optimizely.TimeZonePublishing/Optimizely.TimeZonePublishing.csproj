@@ -7,7 +7,7 @@
 
 
         <PackageId>Mardy.Optimizely.TimeZonePublishing</PackageId>
-        <Version>0.1.0</Version>
+        <Version>0.1.1</Version>
         <Authors>mardy-awd</Authors>
         <Description>Time-zone-aware scheduled publishing for Optimizely CMS 13.</Description>
         <PackageTags>Optimizely;CMS13;Publishing;TimeZone;Scheduling</PackageTags>
@@ -29,11 +29,11 @@
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="EPiServer.CMS" Version="13.4.0" />
+        <PackageReference Include="EPiServer.CMS" Version="13.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="buildTransitive\Optimizely.TimeZonePublishing.targets"
+        <None Include="buildTransitive\Mardy.Optimizely.TimeZonePublishing.targets"
               Pack="true"
               PackagePath="buildTransitive\" />
     </ItemGroup>

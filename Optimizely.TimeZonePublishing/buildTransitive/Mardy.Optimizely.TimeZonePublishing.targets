@@ -1,0 +1,33 @@
+﻿<Project>
+
+    <PropertyGroup>
+        <TimeZonePublishingZipPath>$(MSBuildThisFileDirectory)..\contentFiles\any\net10.0\modules\_protected\TimeZonePublishing\TimeZonePublishing.zip</TimeZonePublishingZipPath>
+    </PropertyGroup>
+
+    <!-- Copy module ZIP into the consuming project for local development -->
+    <Target Name="CopyTimeZonePublishingModule"
+            BeforeTargets="Build"
+            Condition="Exists('$(TimeZonePublishingZipPath)')">
+
+        <Copy
+          SourceFiles="$(TimeZonePublishingZipPath)"
+          DestinationFolder="$(MSBuildProjectDirectory)\modules\_protected\TimeZonePublishing\"
+          SkipUnchangedFiles="true" />
+
+    </Target>
+
+    <!-- Include module ZIP in dotnet publish output -->
+    <Target Name="PublishTimeZonePublishingModule"
+            BeforeTargets="ComputeFilesToPublish"
+            Condition="Exists('$(TimeZonePublishingZipPath)')">
+
+        <ItemGroup>
+            <ResolvedFileToPublish Include="$(TimeZonePublishingZipPath)">
+                <RelativePath>modules\_protected\TimeZonePublishing\TimeZonePublishing.zip</RelativePath>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            </ResolvedFileToPublish>
+        </ItemGroup>
+
+    </Target>
+
+</Project>
